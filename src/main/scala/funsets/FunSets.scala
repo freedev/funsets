@@ -1,9 +1,5 @@
 package funsets
 
-class Set(elem: Int) {
-      def e = elem
-}
-
 /**
  * 2. Purely Functional Sets.
  */
@@ -35,7 +31,9 @@ object FunSets {
    * Returns the intersection of the two given sets,
    * the set of all elements that are both in `s` and `t`.
    */
-    def intersect(s: Set, t: Set): Set = elem => s(elem) && t(elem)
+    def intersect(s: Set, t: Set): Set = {
+      elem => s(elem) && t(elem)
+    }
   
   /**
    * Returns the difference of the two given sets,
@@ -46,7 +44,9 @@ object FunSets {
   /**
    * Returns the subset of `s` for which `p` holds.
    */
-    def filter(s: Set, p: Int => Boolean): Set = elem => p(elem) && s(elem)
+    def filter(s: Set, p: Int => Boolean): Set = {
+      elem => p(elem) && s(elem)
+    }
   
 
   /**
@@ -59,9 +59,13 @@ object FunSets {
    */
     def forall(s: Set, p: Int => Boolean): Boolean = {
     def iter(a: Int): Boolean = {
-      if (a < -bound || a > bound) false
-      else if (p(a)) s(a)
-      else iter(a + 1)
+      if (a > bound) {
+    	  true
+      } else if (s(a)) {
+         p(a) && iter(a + 1)
+      } else {
+        iter(a + 1)
+      }
     }
     iter(-bound)
   }
