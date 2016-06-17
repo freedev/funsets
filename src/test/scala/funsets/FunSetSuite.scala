@@ -77,6 +77,7 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+    val s4 = singletonSet(4)
   }
 
   /**
@@ -107,6 +108,91 @@ class FunSetSuite extends FunSuite {
       assert(contains(s, 1), "Union 1")
       assert(contains(s, 2), "Union 2")
       assert(!contains(s, 3), "Union 3")
+    }
+  }
+
+  test("check for all") {
+    new TestSets {
+      // {1,3,4,5,7,1000}
+      val s = union(union(s4, union(s3, union(s1, s2))), singletonSet(7))
+      val x = forall(s, elem => elem < 5)
+      assert(contains(s, 1), "Union 1")
+      assert(contains(s, 2), "Union 2")
+      assert(contains(s, 3), "Union 3")
+      assert(forall(s, elem => elem < 10))
+      assert(!forall(s, elem => elem < 5))
+    }
+  }
+
+  test("check for intersect") {
+    new TestSets {
+      // {1,3,4,5,7,1000}
+      val s = union(union(s4, union(s3, union(s1, s2))), singletonSet(7))
+      val t = union(singletonSet(7), union(s1, s2))
+
+      assert(contains(s, 1), "Union s1")
+      assert(contains(s, 2), "Union s2")
+
+      assert(contains(t, 1), "Union t1")
+      assert(contains(t, 2), "Union t2")
+
+      val x = intersect(s, t)
+
+      assert(contains(x, 1), "intersect 1")
+      assert(contains(x, 2), "intersect 2")
+//      assert(forall(s, elem => elem < 10))
+//      assert(!forall(s, elem => elem < 5))
+    }
+  }
+
+  test("check for filter") {
+    new TestSets {
+      // {1,3,4,5,7,1000}
+      val s = union(union(s4, union(s3, union(s1, s2))), singletonSet(7))
+
+      assert(contains(s, 1), "Union s1")
+      assert(contains(s, 2), "Union s2")
+
+      val f = (elem :Int) => elem > 2 && elem < 5
+      val x = filter(s, f)
+      
+      assert(contains(x, 3), "filter 3")
+      assert(contains(x, 4), "filter 4")
+      assert(!contains(x, 7), "filter 7")
+//      assert(forall(s, elem => elem < 10))
+//      assert(!forall(s, elem => elem < 5))
+    }
+  }
+
+  test("check for exist") {
+    new TestSets {
+      // {1,3,4,5,7,1000}
+      val s = union(singletonSet(1), 
+          union(singletonSet(2), 
+          union(singletonSet(4), 
+          union(singletonSet(5), 
+          union(singletonSet(7), singletonSet(1000))))))
+          
+      assert(!exists(s, elem => elem == 6), "exists 6 ")
+      assert(exists(s, elem => elem == 7), "exists 7 ")
+
+      
+    }
+  }
+
+  test("check for map") {
+    new TestSets {
+      // {1,3,4,5,7,1000}
+      val s = union(singletonSet(1), 
+          union(singletonSet(2), 
+          union(singletonSet(4), 
+          union(singletonSet(5), 
+          union(singletonSet(7), singletonSet(1000))))))
+          
+      val m = map(s, e => e -1 )
+      
+      printSet(m)
+      
     }
   }
 
