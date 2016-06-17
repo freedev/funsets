@@ -90,7 +90,24 @@ object FunSets {
   /**
    * Returns a set transformed by applying `f` to each element of `s`.
    */
-    def map(s: Set, f: Int => Int): Set = elem => s(f(elem))
+    def map(s: Set, f: Int => Int): Set = {
+      def iter(s1: Set, a: Int): Set = {
+        if (a > bound) {
+          if (s1 != null)
+        	  s1
+          else
+            intersect(Set(1), Set(0))
+        } else if (s(a)) {
+          if (s1 == null)
+            iter(Set(f(a)), a + 1)
+          else
+            iter(union(Set(f(a)), s1), a + 1)
+        } else {
+          iter(s1, a + 1)
+        }
+      }
+      iter(null, -bound)
+    }
   
   /**
    * Displays the contents of a set

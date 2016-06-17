@@ -184,7 +184,7 @@ class FunSetSuite extends FunSuite {
     new TestSets {
       // {1,3,4,5,7,1000}
       val s = union(singletonSet(1), 
-          union(singletonSet(2), 
+          union(singletonSet(3), 
           union(singletonSet(4), 
           union(singletonSet(5), 
           union(singletonSet(7), singletonSet(1000))))))
